@@ -1,6 +1,7 @@
 import { Tajawal, Amiri, Inter } from 'next/font/google';
 import './globals.css';
 import PWAHandler from '@/components/PWAHandler';
+
 const tajawal = Tajawal({
   subsets: ['arabic'],
   weight: ['300', '400', '500', '700'],
@@ -29,8 +30,14 @@ export const metadata = {
     icon: '/icons/icon-192x192.png',
     apple: '/icons/icon-192x192.png',
   },
-  themeColor: '#0D5C4C',
 };;
+
+export const viewport = {
+  themeColor: '#0D5C4C', // ✅ اللون الأخضر الزمردي لشريط العنوان
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+};
 
 export default function RootLayout({
   children,
