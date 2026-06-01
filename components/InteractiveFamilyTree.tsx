@@ -68,14 +68,25 @@ const FAMILY_DATA: Record<string, FamilyMember> = {
 };
 
 // مكون العقدة (الشخصية) في الشجرة
+// مكون العقدة (الشخصية) في الشجرة - نسخة محسّنة
 const FamilyNode = ({ member, onClick }: { member: FamilyMember; onClick: (id: string) => void }) => {
-  // ألوان حسب نوع العلاقة
-  const colors = {
-    prophet: 'stroke-emerald-900 fill-emerald-900 text-cream-50',
-    imam: 'stroke-gold-500 fill-white text-emerald-900',
-    woman: 'stroke-rose-400 fill-white text-rose-600',
-    other: 'stroke-ink-500 fill-white text-ink-700',
+  // ألوان وحسب نوع العلاقة
+  const styles = {
+    prophet: { 
+      stroke: '#0D5C4C', fill: '#0D5C4C', text: '#FFFFFF', ring: '#C9A961' 
+    },
+    imam: { 
+      stroke: '#C9A961', fill: '#FFFFFF', text: '#0D5C4C', ring: '#0D5C4C' 
+    },
+    woman: { 
+      stroke: '#E17A87', fill: '#FFFFFF', text: '#9D174D', ring: '#E17A87' 
+    },
+    other: { 
+      stroke: '#7A7A7A', fill: '#FFFFFF', text: '#4A4A4A', ring: '#7A7A7A' 
+    },
   };
+
+  const style = styles[member.relation];
 
   return (
     <g 
@@ -85,30 +96,57 @@ const FamilyNode = ({ member, onClick }: { member: FamilyMember; onClick: (id: s
       tabIndex={0}
       onKeyDown={(e) => e.key === 'Enter' && onClick(member.id)}
     >
-      {/* دائرة الشخصية */}
+      {/* حلقة خارجية مضيئة (Glow Effect) لتمييز الشخصية */}
+      <circle
+        cx={member.x}
+        cy={member.y}
+        r="42"
+        className="opacity-0 group-hover:opacity-100 transition-opacity"
+        stroke={style.ring}
+        strokeWidth="2"
+        fill="none"
+        strokeDasharray="4 4"
+      />
+      
+      {/* الدائرة الرئيسية للشخصية */}
       <circle
         cx={member.x}
         cy={member.y}
         r="35"
-        className={`${colors[member.relation]} stroke-2 transition-all`}
+        stroke={style.stroke}
+        strokeWidth="2.5"
+        fill={style.fill}
+        className="transition-all duration-300 drop-shadow-md"
       />
-      
-      {/* اسم الشخصية */}
+
+      {/* ✅ الاسم: تم تحسين المحاذاة والتباين */}
       <text
         x={member.x}
-        y={member.y + 55}
+        y={member.y}  // ✅ تم التعديل: نضع y في نفس مركز الدائرة
         textAnchor="middle"
-        className="fill-ink-900 text-xs font-arabic font-medium pointer-events-none select-none"
+        dominantBaseline="middle"  // ✅ هذا هو السر: يجعل النص في منتصف السطر عمودياً
+        className="font-arabic font-bold pointer-events-none select-none"
+        style={{ 
+          fill: style.text, 
+          fontSize: '13px',  // حجم مناسب للعربي
+          filter: style.fill === '#FFFFFF' ? 'none' : 'drop-shadow(0 1px 1px rgba(255,255,255,0.8))' 
+        }}
       >
         {member.name}
       </text>
       
-      {/* اللقب (يظهر عند التكبير أو الهوفر) */}
+      {/* اللقب: يظهر أسفل الاسم بخط أصغر */}
       <text
         x={member.x}
-        y={member.y + 70}
+        y={member.y + 22}  // ✅ إزاحة للأسفل بمقدار 22 بكسل
         textAnchor="middle"
-        className="fill-ink-500 text-[10px] font-arabic pointer-events-none select-none opacity-70"
+        dominantBaseline="middle"
+        className="font-arabic pointer-events-none select-none"
+        style={{ 
+          fill: style.text === '#FFFFFF' ? 'rgba(255,255,255,0.9)' : '#7A7A7A', 
+          fontSize: '10px',
+          fontWeight: 500
+        }}
       >
         {member.title}
       </text>
