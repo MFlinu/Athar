@@ -2,7 +2,6 @@ import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
 import SearchSection from '@/components/SearchSection';
 import PersonalitiesBento from '@/components/PersonalitiesBento';
-import FamilyTreeSection from '@/components/FamilyTreeSection';
 import AIAssistantSection from '@/components/AIAssistantSection';
 import Footer from '@/components/Footer';
 import InteractiveFamilyTree from '@/components/InteractiveFamilyTree';

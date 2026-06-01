@@ -169,10 +169,10 @@ export default function InteractiveFamilyTree() {
 
   // حساب خطوط العلاقات ديناميكياً
   const connections = Object.values(FAMILY_DATA).flatMap(member => 
-    member.children?.map(childId => {
-      const child = FAMILY_DATA[childId];
-      return child ? { from: member, to: child } : null;
-    }).filter(Boolean) || []
+  member.children?.map(childId => {
+    const child = FAMILY_DATA[childId];
+    return child ? { from: member, to: child } : null;
+  }).filter((conn): conn is { from: FamilyMember; to: FamilyMember } => conn !== null) || []
   );
 
   return (
